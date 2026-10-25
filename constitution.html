@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Constitution of Bangladesh — Interactive Study Atlas</title>
+  
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            emerald: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22',
+            },
+            crimson: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              600: '#e11d48',
+              800: '#9f1239',
+              900: '#881337',
+              950: '#4c0519',
+            },
+            gold: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* CSS Dynamic Variables for Themes */
+    :root {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --accent-main: #059669;
+      --accent-hover: #047857;
+      --accent-light: #d1fae5;
+      --accent-border: #a7f3d0;
+      --card-shadow: 0 10px 30px -10px rgba(0,0,0,0.06), 0 4px 12px -2px rgba(0,0,0,0.04);
+      --badge-bg: #ecfdf5;
+      --badge-text: #047857;
+      --header-blur: rgba(255, 255, 255, 0.88);
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #0b1320;
+      --bg-secondary: #111c2e;
+      --bg-card: rgba(17, 28, 46, 0.85);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent-main: #10b981;
+      --accent-hover: #34d399;
+      --accent-light: rgba(16, 185, 129, 0.15);
+      --accent-border: rgba(16, 185, 129, 0.3);
+      --card-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+      --badge-bg: rgba(16, 185, 129, 0.2);
+      --badge-text: #6ee7b7;
+      --header-blur: rgba(11, 19, 32, 0.88);
+    }
+
+    [data-theme="crimson"] {
+      --bg-primary: #120709;
+      --bg-secondary: #1f0d11;
+      --bg-card: rgba(31, 13, 17, 0.85);
+      --text-main: #fff1f2;
+      --text-muted: #fda4af;
+      --accent-main: #f43f5e;
+      --accent-hover: #fb7185;
+      --accent-light: rgba(244, 63, 94, 0.18);
+      --accent-border: rgba(244, 63, 94, 0.35);
+      --card-shadow: 0 10px 30px -10px rgba(159, 18, 57, 0.3);
+      --badge-bg: rgba(244, 63, 94, 0.2);
+      --badge-text: #fecdd3;
+      --header-blur: rgba(18, 7, 9, 0.88);
+    }
+
+    [data-theme="parchment"] {
+      --bg-primary: #fbf7ee;
+      --bg-secondary: #f4eee0;
+      --bg-card: rgba(244, 238, 224, 0.9);
+      --text-main: #2c221e;
+      --text-muted: #6b584c;
+      --accent-main: #b45309;
+      --accent-hover: #92400e;
+      --accent-light: #fef3c7;
+      --accent-border: #fde68a;
+      --card-shadow: 0 10px 25px -5px rgba(120, 53, 15, 0.08);
+      --badge-bg: #fef3c7;
+      --badge-text: #92400e;
+      --header-blur: rgba(251, 247, 238, 0.9);
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Custom Glassmorphism Cards */
+    .theme-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--accent-border);
+      box-shadow: var(--card-shadow);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .theme-card:hover {
+      transform: translateY(-3px);
+    }
+
+    /* 3D Flip Card Styles */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 1rem;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Canvas Animation Overlay */
+    #bgCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-main);
+      border-radius: 4px;
+    }
+
+    /* Highlight class for live search */
+    .search-highlight {
+      background-color: #fef08a;
+      color: #854d0e;
+      padding: 0 4px;
+      border-radius: 2px;
+      font-weight: 600;
+    }
+    
+    [data-theme="dark"] .search-highlight, [data-theme="crimson"] .search-highlight {
+      background-color: #854d0e;
+      color: #fef08a;
+    }
+
+    /* Pulse glow */
+    .glow-pulse {
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+      animation: pulse-glow 3s infinite alternate;
+    }
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
+      100% { box-shadow: 0 0 25px rgba(16, 185, 129, 0.5); }
+    }
+  </style>
+</head>
+<body class="relative min-h-screen pb-24 lg:pb-12 antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- Background Canvas Animation -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Reading Progress Bar -->
+  <div class="fixed top-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-800 z-50">
+    <div id="progressBar" class="h-full bg-emerald-500 transition-all duration-150 w-0"></div>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="sticky top-0 z-40 backdrop-blur-md border-b transition-colors" style="background-color: var(--header-blur); border-color: var(--accent-border);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Logo & Title -->
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="scrollToSection('hero')">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-white shadow-md font-bold text-xl">
+            <i class="fa-solid fa-scale-balanced"></i>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold tracking-tight leading-tight flex items-center gap-2">
+              <span>Constitution of BD</span>
+              <span class="text-xs px-2 py-0.5 rounded-full font-mono font-semibold" style="background: var(--badge-bg); color: var(--badge-text);">ATLAS</span>
+            </h1>
+            <p class="text-xs text-muted font-medium">Study Guide & Learning Hub</p>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden lg:flex items-center space-x-1 font-medium text-sm">
+          <button onclick="scrollToSection('hero')" class="px-3 py-2 rounded-lg hover:bg-emerald-500/10 transition">Overview</button>
+          <button onclick="scrollToSection('parts')" class="px-3 py-2 rounded-lg hover:bg-emerald-500/10 transition">11 Parts</button>
+          <button onclick="scrollToSection('articles')" class="px-3 py-2 rounded-lg hover:bg-emerald-500/10 transition">Articles & Rights</button>
+          <button onclick="scrollToSection('amendments')" class="px-3 py-2 rounded-lg hover:bg-emerald-500/10 transition">Amendments</button>
+          <button onclick="scrollToSection('timeline')" class="px-3 py-2 rounded-lg hover:bg-emerald-500/10 transition">1972 Timeline</button>
+          <button onclick="scrollToSection('quiz')" class="px-3 py-2 rounded-lg hover:bg-emerald-500/10 transition">Drill Quiz</button>
+          <button onclick="scrollToSection('revision')" class="px-3 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition shadow-sm">Fast Revision</button>
+        </nav>
+
+        <!-- Right Controls: Theme Selector & Quick Search -->
+        <div class="flex items-center space-x-2">
+          
+          <!-- Theme Dropdown Button -->
+          <div class="relative inline-block text-left">
+            <button id="themeToggleBtn" onclick="toggleThemeMenu()" class="p-2.5 rounded-xl border transition flex items-center space-x-1" style="border-color: var(--accent-border);">
+              <i class="fa-solid fa-palette text-emerald-500"></i>
+              <i class="fa-solid fa-chevron-down text-xs opacity-60"></i>
+            </button>
+            <div id="themeMenu" class="hidden absolute right-0 mt-2 w-48 rounded-xl shadow-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 py-2 z-50">
+              <div class="px-3 py-1 text-xs font-bold uppercase tracking-wider text-gray-400">Select Theme</div>
+              <button onclick="setTheme('emerald')" class="w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800">
+                <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Emerald Republic</span>
+                <i class="fa-solid fa-check theme-check text-emerald-500 hidden" id="check-emerald"></i>
+              </button>
+              <button onclick="setTheme('dark')" class="w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800">
+                <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-800"></span> Slate Dark</span>
+                <i class="fa-solid fa-check theme-check text-emerald-500 hidden" id="check-dark"></i>
+              </button>
+              <button onclick="setTheme('crimson')" class="w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800">
+                <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-rose-600"></span> Crimson Judicial</span>
+                <i class="fa-solid fa-check theme-check text-emerald-500 hidden" id="check-crimson"></i>
+              </button>
+              <button onclick="setTheme('parchment')" class="w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800">
+                <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-600"></span> Parchment Academic</span>
+                <i class="fa-solid fa-check theme-check text-emerald-500 hidden" id="check-parchment"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Search Modal Trigger -->
+          <button onclick="openSearchModal()" class="p-2.5 rounded-xl border hover:border-emerald-500 transition flex items-center gap-2 text-sm" style="border-color: var(--accent-border);">
+            <i class="fa-solid fa-magnifying-glass text-emerald-500"></i>
+            <span class="hidden md:inline font-medium opacity-75">Search Atlas...</span>
+            <kbd class="hidden md:inline-block px-1.5 py-0.5 text-xs rounded bg-gray-100 dark:bg-gray-800 border text-gray-500 font-mono">⌘K</kbd>
+          </button>
+
+          <!-- Attribution Modal Trigger -->
+          <button onclick="openAboutModal()" class="p-2.5 rounded-xl border hover:border-emerald-500 transition" title="About & Attribution" style="border-color: var(--accent-border);">
+            <i class="fa-solid fa-circle-info text-emerald-500"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative pt-8 pb-12 overflow-hidden z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto space-y-4">
+        
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider" style="background: var(--badge-bg); color: var(--badge-text);">
+          <i class="fa-solid fa-landmark"></i> Supreme Law of the People's Republic of Bangladesh
+        </div>
+
+        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight font-serif leading-tight">
+          Master the <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-500">Bangladesh Constitution</span>
+        </h2>
+
+        <p class="text-base sm:text-lg opacity-80 leading-relaxed font-normal">
+          An interactive digital study atlas covering fundamental principles, scholars' definitions, 18 fundamental rights, major amendments, and constitutional history.
+        </p>
+
+        <!-- Stats Overview Pills -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
+          <div class="p-4 rounded-2xl theme-card text-center">
+            <div class="text-2xl sm:text-3xl font-extrabold text-emerald-500 font-mono">153</div>
+            <div class="text-xs font-medium opacity-70">Articles</div>
+          </div>
+          <div class="p-4 rounded-2xl theme-card text-center">
+            <div class="text-2xl sm:text-3xl font-extrabold text-emerald-500 font-mono">11</div>
+            <div class="text-xs font-medium opacity-70">Parts</div>
+          </div>
+          <div class="p-4 rounded-2xl theme-card text-center">
+            <div class="text-2xl sm:text-3xl font-extrabold text-amber-500 font-mono">18</div>
+            <div class="text-xs font-medium opacity-70">Fundamental Rights</div>
+          </div>
+          <div class="p-4 rounded-2xl theme-card text-center">
+            <div class="text-2xl sm:text-3xl font-extrabold text-teal-500 font-mono">17</div>
+            <div class="text-xs font-medium opacity-70">Amendments</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive High-Yield 3D Flashcards -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 z-10 relative">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-bold flex items-center gap-2">
+        <i class="fa-solid fa-brain text-emerald-500"></i> High-Yield Memory Flashcards
+      </h3>
+      <span class="text-xs font-medium text-muted">Tap to flip & test memory</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      
+      <!-- Card 1: Fundamental Rights Breakdown -->
+      <div class="flip-card h-48 cursor-pointer perspective-1000" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front theme-card p-6 flex flex-col justify-between items-center text-center border">
+            <div class="text-xs font-bold uppercase tracking-wider text-emerald-500">Formula Breakdown</div>
+            <div class="text-2xl font-black font-mono my-auto">8 + 6 + 4 = 18</div>
+            <div class="text-xs opacity-60">Tap to see Rights Breakdown</div>
+          </div>
+          <div class="flip-card-back theme-card p-6 flex flex-col justify-center items-center text-center border bg-emerald-900 text-white">
+            <h4 class="font-bold text-sm mb-2 text-emerald-300">18 Fundamental Rights</h4>
+            <ul class="text-xs space-y-1 text-left list-disc list-inside">
+              <li><strong>Group A (8):</strong> Absolute Rights (Art 27, 28, 29, 30, 33, 34, 35, 44)</li>
+              <li><strong>Group B (6):</strong> Reasonable Restrictions (Art 36, 37, 38, 39, 41, 43)</li>
+              <li><strong>Group C (4):</strong> Left to Legislature (Art 31, 32, 40, 42)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Adoption Dates -->
+      <div class="flip-card h-48 cursor-pointer perspective-1000" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front theme-card p-6 flex flex-col justify-between items-center text-center border">
+            <div class="text-xs font-bold uppercase tracking-wider text-amber-500">Key Milestone</div>
+            <div class="text-lg font-bold font-serif my-auto">Adoption vs Enforcement</div>
+            <div class="text-xs opacity-60">Tap to reveal 1972 exact dates</div>
+          </div>
+          <div class="flip-card-back theme-card p-6 flex flex-col justify-center items-center text-center border bg-amber-950 text-white">
+            <h4 class="font-bold text-sm mb-2 text-amber-300">1972 Historic Dates</h4>
+            <p class="text-xs leading-relaxed">
+              <strong>Adoption:</strong> 4 November 1972<br>
+              <strong>In Force:</strong> 16 December 1972 (Victory Day)<br>
+              <strong>Drafting Chair:</strong> Dr. Kamal Hossain (34 members, 1 woman: Razia Banu)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Four Pillars -->
+      <div class="flip-card h-48 cursor-pointer perspective-1000" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front theme-card p-6 flex flex-col justify-between items-center text-center border">
+            <div class="text-xs font-bold uppercase tracking-wider text-teal-500">Article 8</div>
+            <div class="text-lg font-bold font-serif my-auto">Four Fundamental Principles</div>
+            <div class="text-xs opacity-60">Tap to view Articles 9-12</div>
+          </div>
+          <div class="flip-card-back theme-card p-6 flex flex-col justify-center items-center text-center border bg-teal-950 text-white">
+            <h4 class="font-bold text-sm mb-2 text-teal-300">State Principles</h4>
+            <p class="text-xs space-y-1 text-left">
+              • <strong>Nationalism:</strong> Article 9<br>
+              • <strong>Socialism:</strong> Article 10<br>
+              • <strong>Democracy & Rights:</strong> Article 11<br>
+              • <strong>Secularism:</strong> Article 12
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Main Content Grid / Tabs -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16 z-10 relative">
+
+    <!-- Section 1: Scholars' Definitions & Concepts -->
+    <section id="definitions" class="space-y-6 scroll-mt-20">
+      <div class="border-b pb-4 flex items-center justify-between" style="border-color: var(--accent-border);">
+        <div>
+          <h3 class="text-2xl font-bold font-serif">1. Definitions & Conceptual Foundations</h3>
+          <p class="text-sm opacity-70">Core political theory principles according to classic scholars</p>
+        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full font-mono" style="background: var(--badge-bg); color: var(--badge-text);">Theory</span>
+      </div>
+
+      <!-- Scholars Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div class="theme-card rounded-2xl p-6 border flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold text-lg">
+              <i class="fa-solid fa-quote-left"></i>
+            </div>
+            <h4 class="text-lg font-bold">Woolsey</h4>
+            <p class="text-sm opacity-80 leading-relaxed italic">
+              "A constitution is the collection of principles according to which the power of government, the rights of the governed, and the relation between the two are adjusted."
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t text-xs font-semibold text-emerald-500" style="border-color: var(--accent-border);">
+            Core Key: Government Power vs Citizen Rights
+          </div>
+        </div>
+
+        <div class="theme-card rounded-2xl p-6 border flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold text-lg">
+              <i class="fa-solid fa-quote-left"></i>
+            </div>
+            <h4 class="text-lg font-bold">Lord Bryce</h4>
+            <p class="text-sm opacity-80 leading-relaxed italic">
+              "A constitution is a set of established rules embodying and enacting the practice of government."
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t text-xs font-semibold text-amber-500" style="border-color: var(--accent-border);">
+            Core Key: Established Rules & Government Practice
+          </div>
+        </div>
+
+        <div class="theme-card rounded-2xl p-6 border flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center font-bold text-lg">
+              <i class="fa-solid fa-quote-left"></i>
+            </div>
+            <h4 class="text-lg font-bold">Gilchrist</h4>
+            <p class="text-sm opacity-80 leading-relaxed italic">
+              "A constitution is the body of rules or laws, written or unwritten, determining the organization of government, distribution of powers, and general principles of exercise."
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t text-xs font-semibold text-teal-500" style="border-color: var(--accent-border);">
+            Core Key: Distribution & Exercise of Power
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 4 Pillars of Constitution in General & Types -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- General 4 Pillars -->
+        <div class="theme-card rounded-2xl p-6 border space-y-4">
+          <h4 class="text-lg font-bold flex items-center gap-2">
+            <i class="fa-solid fa-cubes text-emerald-500"></i> Four Major Pillars Established by a Constitution
+          </h4>
+          <ol class="space-y-3 text-sm">
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-xs font-bold shrink-0">1</span>
+              <span><strong>Organization & Powers:</strong> Structure of executive, legislature, and judiciary organs.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-xs font-bold shrink-0">2</span>
+              <span><strong>Political Process:</strong> Principles and rules governing national political participation and elections.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-xs font-bold shrink-0">3</span>
+              <span><strong>People-State Relations:</strong> Defining the authority limits and administrative boundaries.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-xs font-bold shrink-0">4</span>
+              <span><strong>Rights & Duties:</strong> Protecting fundamental rights and legal duties of citizens.</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- Types Matrix -->
+        <div class="theme-card rounded-2xl p-6 border space-y-4">
+          <h4 class="text-lg font-bold flex items-center gap-2">
+            <i class="fa-solid fa-sitemap text-amber-500"></i> Types of Constitutions
+          </h4>
+          <div class="grid grid-cols-2 gap-3 text-xs">
+            <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+              <span class="font-bold block text-emerald-600 dark:text-emerald-400">Written vs Unwritten</span>
+              <span>Set down in a book vs uncodified traditions. BD is Written.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
+              <span class="font-bold block text-amber-600 dark:text-amber-400">Flexible vs Rigid</span>
+              <span>Easily amended vs $2/3$ majority required. BD is Rigid.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-teal-500/10 border border-teal-500/20">
+              <span class="font-bold block text-teal-600 dark:text-teal-400">Evolved vs Enacted</span>
+              <span>Slow historical growth vs created by Constituent Assembly. BD is Enacted.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20">
+              <span class="font-bold block text-purple-600 dark:text-purple-400">Enacted Examples</span>
+              <span>India, USA, Japan, China, and Bangladesh.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 10 Essentials Checklist -->
+      <div class="theme-card rounded-2xl p-6 border space-y-4">
+        <h4 class="text-lg font-bold flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-emerald-500"></i> 10 Essentials of a Good Constitution
+        </h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
+          <div class="p-3 rounded-xl bg-gray-500/10 border"><strong>1. Clear Form:</strong> Simple, unambiguous language.</div>
+          <div class="p-3 rounded-xl bg-gray-500/10 border"><strong>2. Legal Supremacy:</strong> Enjoys supremacy over ordinary laws.</div>
+          <div class="p-3 rounded-xl bg-gray-500/10 border"><strong>3. Adaptability:</strong> Balanced rigidity and flexibility.</div>
+          <div class="p-3 rounded-xl bg-gray-500/10 border"><strong>4. Fundamental Rights:</strong> Guarantees civil liberties.</div>
+          <div class="p-3 rounded-xl bg-gray-500/10 border"><strong>5. Clear Organs:</strong> Defines Executive, Legislature, Judiciary.</div>
+          <div class="p-3 rounded-xl bg-gray-500/10 border"><strong>6. Rule of Law:</strong> Equal protection under law.</div>
+          <div class="p-3 rounded-xl bg-gray-500/10 border"><strong>7. Decentralization:</strong> Power distributed to local bodies.</div>
+          <div class="p-3 rounded-xl bg-gray-500/10 border"><strong>8. Judicial Independence:</strong> Powerful & impartial courts.</div>
+          <div class="p-3 rounded-xl bg-gray-500/10 border"><strong>9. Sound Amendments:</strong> Structured procedure (Art 142).</div>
+          <div class="p-3 rounded-xl bg-gray-500/10 border"><strong>10. Free Elections:</strong> Independent electoral machinery.</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Section 2: 11 Parts & Memory Flow -->
+    <section id="parts" class="space-y-6 scroll-mt-20">
+      <div class="border-b pb-4 flex items-center justify-between" style="border-color: var(--accent-border);">
+        <div>
+          <h3 class="text-2xl font-bold font-serif">2. The 11 Parts & Structure</h3>
+          <p class="text-sm opacity-70">Complete breakdown of parts and the memory flow mnemonic</p>
+        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full font-mono" style="background: var(--badge-bg); color: var(--badge-text);">Structure</span>
+      </div>
+
+      <!-- Memory Flow Mnemonic Bar -->
+      <div class="p-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-800 text-white shadow-lg space-y-2">
+        <div class="text-xs uppercase font-bold tracking-wider text-emerald-200 flex items-center gap-1">
+          <i class="fa-solid fa-lightbulb"></i> Memory Flow Mnemonic
+        </div>
+        <div class="text-xs sm:text-sm font-medium flex flex-wrap items-center gap-2 font-mono">
+          <span class="bg-white/20 px-2 py-0.5 rounded">Republic</span> →
+          <span class="bg-white/20 px-2 py-0.5 rounded">State Principles</span> →
+          <span class="bg-white/20 px-2 py-0.5 rounded">Rights</span> →
+          <span class="bg-white/20 px-2 py-0.5 rounded">Executive</span> →
+          <span class="bg-white/20 px-2 py-0.5 rounded">Legislature</span> →
+          <span class="bg-white/20 px-2 py-0.5 rounded">Judiciary</span> →
+          <span class="bg-white/20 px-2 py-0.5 rounded">Elections</span> →
+          <span class="bg-white/20 px-2 py-0.5 rounded">CAG</span> →
+          <span class="bg-white/20 px-2 py-0.5 rounded">Services</span> →
+          <span class="bg-white/20 px-2 py-0.5 rounded">Emergency</span> →
+          <span class="bg-white/20 px-2 py-0.5 rounded">Amendment</span> →
+          <span class="bg-white/20 px-2 py-0.5 rounded">Misc</span>
+        </div>
+      </div>
+
+      <!-- Interactive Table / Grid of Parts -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+        <div class="theme-card rounded-xl p-4 border flex items-center space-x-3">
+          <span class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-extrabold font-mono text-sm">I</span>
+          <div>
+            <h5 class="font-bold text-sm">Part I: The Republic</h5>
+            <p class="text-xs opacity-70">Articles 1 – 7B (Unitary state, language, supremacy)</p>
+          </div>
+        </div>
+
+        <div class="theme-card rounded-xl p-4 border flex items-center space-x-3">
+          <span class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-extrabold font-mono text-sm">II</span>
+          <div>
+            <h5 class="font-bold text-sm">Part II: Fundamental Principles</h5>
+            <p class="text-xs opacity-70">Articles 8 – 25 (Nationalism, Socialism, Democracy, Secularism)</p>
+          </div>
+        </div>
+
+        <div class="theme-card rounded-xl p-4 border flex items-center space-x-3">
+          <span class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-extrabold font-mono text-sm">III</span>
+          <div>
+            <h5 class="font-bold text-sm">Part III: Fundamental Rights</h5>
+            <p class="text-xs opacity-70">Articles 26 – 47A (18 Fundamental Rights breakdown)</p>
+          </div>
+        </div>
+
+        <div class="theme-card rounded-xl p-4 border flex items-center space-x-3">
+          <span class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-extrabold font-mono text-sm">IV</span>
+          <div>
+            <h5 class="font-bold text-sm">Part IV: The Executive</h5>
+            <p class="text-xs opacity-70">Articles 48 – 64 (President, Prime Minister, Cabinet)</p>
+          </div>
+        </div>
+
+        <div class="theme-card rounded-xl p-4 border flex items-center space-x-3">
+          <span class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-extrabold font-mono text-sm">V</span>
+          <div>
+            <h5 class="font-bold text-sm">Part V: The Legislature</h5>
+            <p class="text-xs opacity-70">Articles 65 – 93 (Jatiya Sangsad & Financial Procedure)</p>
+          </div>
+        </div>
+
+        <div class="theme-card rounded-xl p-4 border flex items-center space-x-3">
+          <span class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-extrabold font-mono text-sm">VI</span>
+          <div>
+            <h5 class="font-bold text-sm">Part VI: The Judiciary</h5>
+            <p class="text-xs opacity-70">Articles 94 – 117 (Supreme Court, High Court, Subordinate Courts)</p>
+          </div>
+        </div>
+
+        <div class="theme-card rounded-xl p-4 border flex items-center space-x-3">
+          <span class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-extrabold font-mono text-sm">VII</span>
+          <div>
+            <h5 class="font-bold text-sm">Part VII: Elections</h5>
+            <p class="text-xs opacity-70">Articles 118 – 126 (Election Commission & Voter Rights)</p>
+          </div>
+        </div>
+
+        <div class="theme-card rounded-xl p-4 border flex items-center space-x-3">
+          <span class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-extrabold font-mono text-sm">VIII</span>
+          <div>
+            <h5 class="font-bold text-sm">Part VIII: CAG</h5>
+            <p class="text-xs opacity-70">Articles 127 – 132 (Comptroller & Auditor General)</p>
+          </div>
+        </div>
+
+        <div class="theme-card rounded-xl p-4 border flex items-center space-x-3">
+          <span class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-extrabold font-mono text-sm">IX</span>
+          <div>
+            <h5 class="font-bold text-sm">Part IX: Services of BD</h5>
+            <p class="text-xs opacity-70">Articles 133 – 141 (Public Service Commissions)</p>
+          </div>
+        </div>
+
+        <div class="theme-card rounded-xl p-4 border flex items-center space-x-3">
+          <span class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-extrabold font-mono text-sm">IX-A</span>
+          <div>
+            <h5 class="font-bold text-sm">Part IX-A: Emergency Provisions</h5>
+            <p class="text-xs opacity-70">Articles 141A – 141C (Proclamation of Emergency)</p>
+          </div>
+        </div>
+
+        <div class="theme-card rounded-xl p-4 border flex items-center space-x-3">
+          <span class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-extrabold font-mono text-sm">X</span>
+          <div>
+            <h5 class="font-bold text-sm">Part X: Amendment</h5>
+            <p class="text-xs opacity-70">Article 142 (Power & Procedure to Amend Constitution)</p>
+          </div>
+        </div>
+
+        <div class="theme-card rounded-xl p-4 border flex items-center space-x-3">
+          <span class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-extrabold font-mono text-sm">XI</span>
+          <div>
+            <h5 class="font-bold text-sm">Part XI: Miscellaneous</h5>
+            <p class="text-xs opacity-70">Articles 143 – 153 (National Language, Capital, Schedules)</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section 3: Articles & 18 Fundamental Rights Breakdown -->
+    <section id="articles" class="space-y-6 scroll-mt-20">
+      <div class="border-b pb-4 flex items-center justify-between" style="border-color: var(--accent-border);">
+        <div>
+          <h3 class="text-2xl font-bold font-serif">3. High-Yield Articles & Rights Matrix</h3>
+          <p class="text-sm opacity-70">Detailed categorization of the 18 Fundamental Rights in Part III</p>
+        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full font-mono" style="background: var(--badge-bg); color: var(--badge-text);">Part III</span>
+      </div>
+
+      <!-- Filter Tabs for Fundamental Rights -->
+      <div class="flex items-center space-x-2 overflow-x-auto pb-2">
+        <button onclick="filterRights('all')" id="btn-right-all" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-emerald-600 text-white">All 18 Rights</button>
+        <button onclick="filterRights('groupA')" id="btn-right-groupA" class="px-4 py-2 rounded-xl text-xs font-bold transition border hover:bg-emerald-500/10" style="border-color: var(--accent-border);">Group A: Absolute (8)</button>
+        <button onclick="filterRights('groupB')" id="btn-right-groupB" class="px-4 py-2 rounded-xl text-xs font-bold transition border hover:bg-emerald-500/10" style="border-color: var(--accent-border);">Group B: Restricted (6)</button>
+        <button onclick="filterRights('groupC')" id="btn-right-groupC" class="px-4 py-2 rounded-xl text-xs font-bold transition border hover:bg-emerald-500/10" style="border-color: var(--accent-border);">Group C: Legislative (4)</button>
+      </div>
+
+      <!-- Rights Table Grid -->
+      <div id="rightsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+        <!-- Group A Cards -->
+        <div class="right-card groupA theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-500">Article 27</span>
+            <span class="text-xs font-semibold text-emerald-600">Group A (Absolute)</span>
+          </div>
+          <h5 class="font-bold text-sm">Equality Before Law</h5>
+          <p class="text-xs opacity-75">All citizens are equal before law and are entitled to equal protection of law.</p>
+        </div>
+
+        <div class="right-card groupA theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-500">Article 28</span>
+            <span class="text-xs font-semibold text-emerald-600">Group A (Absolute)</span>
+          </div>
+          <h5 class="font-bold text-sm">Non-Discrimination</h5>
+          <p class="text-xs opacity-75">No discrimination against any citizen on grounds only of religion, race, caste, sex, or place of birth.</p>
+        </div>
+
+        <div class="right-card groupA theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-500">Article 29</span>
+            <span class="text-xs font-semibold text-emerald-600">Group A (Absolute)</span>
+          </div>
+          <h5 class="font-bold text-sm">Equality of Public Employment</h5>
+          <p class="text-xs opacity-75">Equal opportunity for all citizens in respect of employment or office in the service of Republic.</p>
+        </div>
+
+        <div class="right-card groupA theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-500">Article 30</span>
+            <span class="text-xs font-semibold text-emerald-600">Group A (Absolute)</span>
+          </div>
+          <h5 class="font-bold text-sm">Prohibition of Foreign Titles</h5>
+          <p class="text-xs opacity-75">No citizen shall accept any title, honour, award, or decoration from any foreign state without prior approval.</p>
+        </div>
+
+        <div class="right-card groupA theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-500">Article 33</span>
+            <span class="text-xs font-semibold text-emerald-600">Group A (Absolute)</span>
+          </div>
+          <h5 class="font-bold text-sm">Safeguards as to Arrest/Detention</h5>
+          <p class="text-xs opacity-75">Right to be informed of grounds of arrest, right to consult lawyer, and production before Magistrate within 24 hours.</p>
+        </div>
+
+        <div class="right-card groupA theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-500">Article 34</span>
+            <span class="text-xs font-semibold text-emerald-600">Group A (Absolute)</span>
+          </div>
+          <h5 class="font-bold text-sm">Prohibition of Forced Labour</h5>
+          <p class="text-xs opacity-75">All forms of forced labour are prohibited and punishable by law.</p>
+        </div>
+
+        <div class="right-card groupA theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-500">Article 35</span>
+            <span class="text-xs font-semibold text-emerald-600">Group A (Absolute)</span>
+          </div>
+          <h5 class="font-bold text-sm">Protection in Trial & Punishment</h5>
+          <p class="text-xs opacity-75">Protection against ex-post facto laws, double jeopardy, and self-incrimination.</p>
+        </div>
+
+        <div class="right-card groupA theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-500">Article 44</span>
+            <span class="text-xs font-semibold text-emerald-600">Group A (Absolute)</span>
+          </div>
+          <h5 class="font-bold text-sm">Enforcement of Fundamental Rights</h5>
+          <p class="text-xs opacity-75">Right to move High Court Division under Article 102 for enforcement of Part III rights.</p>
+        </div>
+
+        <!-- Group B Cards -->
+        <div class="right-card groupB theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-500">Article 36</span>
+            <span class="text-xs font-semibold text-amber-600">Group B (Restricted)</span>
+          </div>
+          <h5 class="font-bold text-sm">Freedom of Movement</h5>
+          <p class="text-xs opacity-75">Subject to reasonable restrictions imposed by law in the public interest.</p>
+        </div>
+
+        <div class="right-card groupB theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-500">Article 37</span>
+            <span class="text-xs font-semibold text-amber-600">Group B (Restricted)</span>
+          </div>
+          <h5 class="font-bold text-sm">Freedom of Assembly</h5>
+          <p class="text-xs opacity-75">Right to assemble peacefully and without arms, subject to reasonable restrictions.</p>
+        </div>
+
+        <div class="right-card groupB theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-500">Article 38</span>
+            <span class="text-xs font-semibold text-amber-600">Group B (Restricted)</span>
+          </div>
+          <h5 class="font-bold text-sm">Freedom of Association</h5>
+          <p class="text-xs opacity-75">Right to form associations or unions, subject to reasonable restrictions in public interest.</p>
+        </div>
+
+        <div class="right-card groupB theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-500">Article 39</span>
+            <span class="text-xs font-semibold text-amber-600">Group B (Restricted)</span>
+          </div>
+          <h5 class="font-bold text-sm">Thought, Speech & Press</h5>
+          <p class="text-xs opacity-75">Freedom of thought, conscience, speech, expression, and press freedom subject to security restrictions.</p>
+        </div>
+
+        <div class="right-card groupB theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-500">Article 41</span>
+            <span class="text-xs font-semibold text-amber-600">Group B (Restricted)</span>
+          </div>
+          <h5 class="font-bold text-sm">Freedom of Religion</h5>
+          <p class="text-xs opacity-75">Right to profess, practice or propagate any religion, subject to law and public order.</p>
+        </div>
+
+        <div class="right-card groupB theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-500">Article 43</span>
+            <span class="text-xs font-semibold text-amber-600">Group B (Restricted)</span>
+          </div>
+          <h5 class="font-bold text-sm">Protection of Home & Mail</h5>
+          <p class="text-xs opacity-75">Privacy of home and correspondence protected, subject to legal search restrictions.</p>
+        </div>
+
+        <!-- Group C Cards -->
+        <div class="right-card groupC theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-teal-500/20 text-teal-500">Article 31</span>
+            <span class="text-xs font-semibold text-teal-600">Group C (Legislative)</span>
+          </div>
+          <h5 class="font-bold text-sm">Right to Protection of Law</h5>
+          <p class="text-xs opacity-75">Inalienable right to enjoy protection of law and be treated in accordance with law.</p>
+        </div>
+
+        <div class="right-card groupC theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-teal-500/20 text-teal-500">Article 32</span>
+            <span class="text-xs font-semibold text-teal-600">Group C (Legislative)</span>
+          </div>
+          <h5 class="font-bold text-sm">Protection of Life & Liberty</h5>
+          <p class="text-xs opacity-75">No person shall be deprived of life or personal liberty save in accordance with law.</p>
+        </div>
+
+        <div class="right-card groupC theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-teal-500/20 text-teal-500">Article 40</span>
+            <span class="text-xs font-semibold text-teal-600">Group C (Legislative)</span>
+          </div>
+          <h5 class="font-bold text-sm">Lawful Profession or Trade</h5>
+          <p class="text-xs opacity-75">Right to enter upon any lawful profession or occupation, subject to qualifications prescribed by law.</p>
+        </div>
+
+        <div class="right-card groupC theme-card rounded-2xl p-5 border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-teal-500/20 text-teal-500">Article 42</span>
+            <span class="text-xs font-semibold text-teal-600">Group C (Legislative)</span>
+          </div>
+          <h5 class="font-bold text-sm">Protection of Property Rights</h5>
+          <p class="text-xs opacity-75">Right to acquire, hold, transfer or dispose of property, subject to conditions by law.</p>
+        </div>
+
+      </div>
+
+      <!-- Education & Voting Rights Spotlight -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
+        
+        <!-- Education Case Study -->
+        <div class="theme-card rounded-2xl p-6 border space-y-3">
+          <div class="flex items-center gap-2 text-emerald-500 font-bold text-sm uppercase tracking-wider">
+            <i class="fa-solid fa-graduation-cap"></i> Special Case: Is Education a Fundamental Right?
+          </div>
+          <h4 class="text-xl font-bold font-serif">Education is a Directive Principle (Art. 17)</h4>
+          <p class="text-sm opacity-80 leading-relaxed">
+            <strong>No, education is NOT listed under Part III Fundamental Rights.</strong> Instead, <strong>Article 17</strong> establishes universal, free, and compulsory education as a <em>Directive Principle of State Policy</em>.
+          </p>
+          <div class="p-3 rounded-xl bg-amber-500/10 text-amber-800 dark:text-amber-200 text-xs border border-amber-500/20">
+            <strong>Global Contrast:</strong> Universal Declaration of Human Rights (UDHR 1948) explicitly recognizes education as a universal right.
+          </div>
+        </div>
+
+        <!-- Voting Rights -->
+        <div class="theme-card rounded-2xl p-6 border space-y-3">
+          <div class="flex items-center gap-2 text-teal-500 font-bold text-sm uppercase tracking-wider">
+            <i class="fa-solid fa-check-to-slot"></i> Voting Rights & Sovereignty
+          </div>
+          <h4 class="text-xl font-bold font-serif">Articles 7(1), 11 & 122</h4>
+          <p class="text-sm opacity-80 leading-relaxed">
+            Citizens are supreme power holders (Art 7). Under <strong>Article 122</strong>, every citizen of sound mind who is <strong>18 years or older</strong> has the right to vote in national and local elections, irrespective of caste, religion, or social status.
+          </p>
+          <div class="flex items-center gap-2 text-xs font-semibold text-teal-600 dark:text-teal-400">
+            <i class="fa-solid fa-users"></i> Applies to National, District & Local Body Elections
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- Section 4: 1972 Historical Timeline -->
+    <section id="timeline" class="space-y-6 scroll-mt-20">
+      <div class="border-b pb-4 flex items-center justify-between" style="border-color: var(--accent-border);">
+        <div>
+          <h3 class="text-2xl font-bold font-serif">4. Historic Drafting Timeline (1972)</h3>
+          <p class="text-sm opacity-70">Rapid constitutional genesis within the first year of independence</p>
+        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full font-mono" style="background: var(--badge-bg); color: var(--badge-text);">History</span>
+      </div>
+
+      <!-- Vertical Timeline Component -->
+      <div class="relative border-l-2 border-emerald-500/30 ml-4 sm:ml-8 space-y-8">
+        
+        <!-- Step 1 -->
+        <div class="relative pl-6 sm:pl-8">
+          <span class="absolute -left-3 top-1 w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shadow-md">1</span>
+          <div class="theme-card rounded-2xl p-5 border space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-emerald-500">23 March 1972</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-semibold">Presidential Order</span>
+            </div>
+            <h5 class="font-bold text-base">Constituent Assembly Order Issued</h5>
+            <p class="text-xs opacity-75">President issued the Constituent Assembly of Bangladesh Order, 1972 to form the framing body.</p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative pl-6 sm:pl-8">
+          <span class="absolute -left-3 top-1 w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shadow-md">2</span>
+          <div class="theme-card rounded-2xl p-5 border space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-emerald-500">10 April 1972</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-semibold">First Session</span>
+            </div>
+            <h5 class="font-bold text-base">Constituent Assembly Convenes</h5>
+            <p class="text-xs opacity-75">First meeting held with <strong>404 out of 469 members</strong> taking part.</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative pl-6 sm:pl-8">
+          <span class="absolute -left-3 top-1 w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shadow-md">3</span>
+          <div class="theme-card rounded-2xl p-5 border space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-emerald-500">11 April 1972</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-semibold">34 Members</span>
+            </div>
+            <h5 class="font-bold text-base">Drafting Committee Formed</h5>
+            <p class="text-xs opacity-75">
+              Chaired by <strong>Dr. Kamal Hossain</strong>. <strong>Razia Banu</strong> was the sole woman member on the 34-member committee.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="relative pl-6 sm:pl-8">
+          <span class="absolute -left-3 top-1 w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shadow-md">4</span>
+          <div class="theme-card rounded-2xl p-5 border space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-emerald-500">12 October 1972</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-semibold">Assembly Table</span>
+            </div>
+            <h5 class="font-bold text-base">Constitution Bill Introduced</h5>
+            <p class="text-xs opacity-75">The completed Draft Constitution Bill was introduced in the Constituent Assembly for debate.</p>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="relative pl-6 sm:pl-8">
+          <span class="absolute -left-3 top-1 w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold shadow-md">5</span>
+          <div class="theme-card rounded-2xl p-5 border space-y-1 border-amber-500/30">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-amber-500">4 November 1972</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 font-semibold">Adoption</span>
+            </div>
+            <h5 class="font-bold text-base">Constitution Formally Adopted</h5>
+            <p class="text-xs opacity-75">Passed and adopted by the Constituent Assembly of Bangladesh.</p>
+          </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="relative pl-6 sm:pl-8">
+          <span class="absolute -left-3 top-1 w-6 h-6 rounded-full bg-teal-500 text-white flex items-center justify-center text-xs font-bold shadow-md">6</span>
+          <div class="theme-card rounded-2xl p-5 border space-y-1 border-teal-500/30">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-teal-500">16 December 1972</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-teal-500/10 text-teal-600 font-semibold">Enforcement</span>
+            </div>
+            <h5 class="font-bold text-base">Came into Force on Victory Day</h5>
+            <p class="text-xs opacity-75">Signed into law by Prime Minister Sheikh Mujibur Rahman. Original structure: 153 Articles, 11 Parts, 4 Schedules.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section 5: Major Constitutional Amendments -->
+    <section id="amendments" class="space-y-6 scroll-mt-20">
+      <div class="border-b pb-4 flex items-center justify-between" style="border-color: var(--accent-border);">
+        <div>
+          <h3 class="text-2xl font-bold font-serif">5. Amendment Mechanics (Art 142) & Major Amendments</h3>
+          <p class="text-sm opacity-70">17 Amendments made to date; key structural shifts in governance</p>
+        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full font-mono" style="background: var(--badge-bg); color: var(--badge-text);">Article 142</span>
+      </div>
+
+      <!-- Article 142 Requirement Banner -->
+      <div class="theme-card rounded-2xl p-6 border space-y-3">
+        <h4 class="font-bold text-base flex items-center gap-2">
+          <i class="fa-solid fa-pen-to-square text-emerald-500"></i> How to Change the Constitution (Article 142 Flow)
+        </h4>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-center font-semibold">
+          <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+            <span class="text-emerald-500 font-extrabold block text-sm">Step 1</span>
+            Clarity of changed material stated in Bill
+          </div>
+          <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
+            <span class="text-amber-500 font-extrabold block text-sm">Step 2</span>
+            2/3 Votes of total Parliament members
+          </div>
+          <div class="p-3 rounded-xl bg-teal-500/10 border border-teal-500/20">
+            <span class="text-teal-500 font-extrabold block text-sm">Step 3</span>
+            President's assent & formal approval
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Amendments Detailed Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- 4th Amendment -->
+        <div class="theme-card rounded-2xl p-6 border space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-rose-500/20 text-rose-500">4th Amendment</span>
+            <span class="text-xs text-muted">25 Jan 1975</span>
+          </div>
+          <h5 class="font-bold text-base">Presidential System & One-Party</h5>
+          <p class="text-xs opacity-80 leading-relaxed">
+            Replaced Parliamentary system with Presidential system; instituted one-party rule, curtailed JS power, and restricted Supreme Court jurisdiction over fundamental rights enforcement.
+          </p>
+        </div>
+
+        <!-- 8th Amendment -->
+        <div class="theme-card rounded-2xl p-6 border space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-500">8th Amendment</span>
+            <span class="text-xs text-muted">7 June 1988</span>
+          </div>
+          <h5 class="font-bold text-base">State Religion & High Court Benches</h5>
+          <p class="text-xs opacity-80 leading-relaxed">
+            Declared Islam state religion; set 6 High Court benches outside Dhaka; changed 'Bengali'→'Bangla' and 'Dacca'→'Dhaka'. <em>(SC later struck down regional HC benches as basic structure violation)</em>.
+          </p>
+        </div>
+
+        <!-- 12th Amendment -->
+        <div class="theme-card rounded-2xl p-6 border space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-500">12th Amendment</span>
+            <span class="text-xs text-muted">6 Aug 1991</span>
+          </div>
+          <h5 class="font-bold text-base">Restored Parliamentary System</h5>
+          <p class="text-xs opacity-80 leading-relaxed">
+            Major landmark: Restored Westminster parliamentary democracy; President became constitutional head and PM executive head. Vice-President post abolished.
+          </p>
+        </div>
+
+        <!-- 14th Amendment -->
+        <div class="theme-card rounded-2xl p-6 border space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-purple-500/20 text-purple-500">14th Amendment</span>
+            <span class="text-xs text-muted">16 May 2004</span>
+          </div>
+          <h5 class="font-bold text-base">45 Women Seats & Retirement Ages</h5>
+          <p class="text-xs opacity-80 leading-relaxed">
+            Reserved 45 women's seats in JS; raised retirement age of SC judges (65→67), PSC Chair (62→65), and CAG (60→65); displayed presidential portraits.
+          </p>
+        </div>
+
+        <!-- 15th Amendment -->
+        <div class="theme-card rounded-2xl p-6 border space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-teal-500/20 text-teal-500">15th Amendment</span>
+            <span class="text-xs text-muted">30 June 2011</span>
+          </div>
+          <h5 class="font-bold text-base">Caretaker Abolished & 50 Women Seats</h5>
+          <p class="text-xs opacity-80 leading-relaxed">
+            Abolished caretaker government; inserted Articles 7A & 7B (basic features non-amendable); restored Secularism (Art 12); expanded reserved women seats to 50; citizens termed 'Bangalees' nationally.
+          </p>
+        </div>
+
+        <!-- 16th Amendment -->
+        <div class="theme-card rounded-2xl p-6 border space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-blue-500/20 text-blue-500">16th Amendment</span>
+            <span class="text-xs text-muted">17 Sept 2014</span>
+          </div>
+          <h5 class="font-bold text-base">Judicial Impeachment Power</h5>
+          <p class="text-xs opacity-80 leading-relaxed">
+            Empowered Parliament to remove SC judges for proved misbehaviour/incapacity by 2/3 vote (Art 96).
+          </p>
+          <div class="p-2 rounded bg-rose-500/10 border border-rose-500/20 text-[10px] text-rose-700 dark:text-rose-300">
+            <strong>Judicial Note:</strong> High Court (May 2016) & Appellate Division (July 2017) declared 16th Amendment unconstitutional, restoring Supreme Judicial Council.
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- Section 6: Shortcomings & Contradictions -->
+    <section id="shortcomings" class="space-y-6 scroll-mt-20">
+      <div class="border-b pb-4 flex items-center justify-between" style="border-color: var(--accent-border);">
+        <div>
+          <h3 class="text-2xl font-bold font-serif">6. Constitutional Shortcomings & Contradictions</h3>
+          <p class="text-sm opacity-70">Analytical review of structural tensions identified in class notes</p>
+        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full font-mono" style="background: var(--badge-bg); color: var(--badge-text);">Analysis</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <div class="theme-card rounded-2xl p-6 border space-y-2">
+          <div class="flex items-center gap-2 text-rose-500 font-bold text-sm">
+            <i class="fa-solid fa-triangle-exclamation"></i> Controversial Article 70
+          </div>
+          <p class="text-xs opacity-80 leading-relaxed">
+            An MP loses their seat if they vote against their party. This creates a direct contradiction with <strong>Article 55(3)</strong> (collective cabinet responsibility to Parliament), preventing effective parliamentary control over the executive.
+          </p>
+        </div>
+
+        <div class="theme-card rounded-2xl p-6 border space-y-2">
+          <div class="flex items-center gap-2 text-amber-500 font-bold text-sm">
+            <i class="fa-solid fa-scale-unbalanced"></i> Religion vs Secularism Tension
+          </div>
+          <p class="text-xs opacity-80 leading-relaxed">
+            Simultaneous retention of <em>Bismillah-ar-Rahman-ar-Rahim</em> and Islam as State Religion alongside Secularism (Art. 12) creates conceptual friction in the basic character of the state.
+          </p>
+        </div>
+
+        <div class="theme-card rounded-2xl p-6 border space-y-2">
+          <div class="flex items-center gap-2 text-purple-500 font-bold text-sm">
+            <i class="fa-solid fa-crown"></i> Prime Ministerial Power Imbalance
+          </div>
+          <p class="text-xs opacity-80 leading-relaxed">
+            Lack of adequate checks and balances between the President and Prime Minister grants disproportionate executive power to the Prime Minister.
+          </p>
+        </div>
+
+        <div class="theme-card rounded-2xl p-6 border space-y-2">
+          <div class="flex items-center gap-2 text-blue-500 font-bold text-sm">
+            <i class="fa-solid fa-puzzle-piece"></i> Articles Tensions & Politicization
+          </div>
+          <p class="text-xs opacity-80 leading-relaxed">
+            Inter-article tensions among Articles 8, 27, 29, 55, and 70; dynamic politicization can hamper the democratic spirit if practiced partially.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section 7: Interactive Quiz Drill -->
+    <section id="quiz" class="space-y-6 scroll-mt-20">
+      <div class="border-b pb-4 flex items-center justify-between" style="border-color: var(--accent-border);">
+        <div>
+          <h3 class="text-2xl font-bold font-serif">7. Interactive Knowledge Drill</h3>
+          <p class="text-sm opacity-70">Test your mastery with instant feedback and score tracking</p>
+        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full font-mono" style="background: var(--badge-bg); color: var(--badge-text);">Practice</span>
+      </div>
+
+      <div class="theme-card rounded-2xl p-6 sm:p-8 border max-w-3xl mx-auto space-y-6">
+        
+        <div class="flex items-center justify-between border-b pb-4" style="border-color: var(--accent-border);">
+          <div class="text-sm font-bold flex items-center gap-2">
+            <i class="fa-solid fa-circle-question text-emerald-500"></i>
+            <span>Question <span id="quizCurrent">1</span> of <span id="quizTotal">5</span></span>
+          </div>
+          <div id="quizScoreBadge" class="text-xs font-mono font-bold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500">
+            Score: 0
+          </div>
+        </div>
+
+        <div id="quizContainer" class="space-y-4">
+          <!-- Dynamic Question text injected by JS -->
+        </div>
+
+        <div class="flex justify-between items-center pt-4 border-t" style="border-color: var(--accent-border);">
+          <button onclick="restartQuiz()" class="px-4 py-2 rounded-xl text-xs font-bold border hover:bg-emerald-500/10 transition" style="border-color: var(--accent-border);">
+            <i class="fa-solid fa-rotate-right"></i> Reset Drill
+          </button>
+          <button id="nextQuizBtn" onclick="nextQuestion()" class="hidden px-5 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition">
+            Next Question <i class="fa-solid fa-arrow-right ml-1"></i>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section 8: Super-Fast Exam Revision Sheet -->
+    <section id="revision" class="space-y-6 scroll-mt-20">
+      <div class="border-b pb-4 flex items-center justify-between" style="border-color: var(--accent-border);">
+        <div>
+          <h3 class="text-2xl font-bold font-serif text-emerald-600 dark:text-emerald-400">8. ⭐ Super-Fast Exam Revision Sheet</h3>
+          <p class="text-sm opacity-70">Ultra-concentrated key facts for last-minute exam prep</p>
+        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full font-mono bg-emerald-600 text-white">High Yield</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Snapshot Summary -->
+        <div class="theme-card rounded-2xl p-6 border space-y-3">
+          <h5 class="font-bold text-sm text-emerald-500 uppercase tracking-wider">Constitution Snapshot</h5>
+          <ul class="text-xs space-y-2">
+            <li class="flex justify-between border-b pb-1"><span>Preamble:</span> <strong>1</strong></li>
+            <li class="flex justify-between border-b pb-1"><span>Parts:</span> <strong>11</strong></li>
+            <li class="flex justify-between border-b pb-1"><span>Articles:</span> <strong>153</strong></li>
+            <li class="flex justify-between border-b pb-1"><span>Schedules:</span> <strong>7</strong></li>
+            <li class="flex justify-between border-b pb-1"><span>Amendments:</span> <strong>17</strong></li>
+          </ul>
+        </div>
+
+        <!-- Four Fundamental Principles -->
+        <div class="theme-card rounded-2xl p-6 border space-y-3">
+          <h5 class="font-bold text-sm text-amber-500 uppercase tracking-wider">Four State Principles (Art 8)</h5>
+          <ul class="text-xs space-y-2">
+            <li class="flex justify-between border-b pb-1"><span>Nationalism:</span> <strong>Article 9</strong></li>
+            <li class="flex justify-between border-b pb-1"><span>Socialism:</span> <strong>Article 10</strong></li>
+            <li class="flex justify-between border-b pb-1"><span>Democracy:</span> <strong>Article 11</strong></li>
+            <li class="flex justify-between border-b pb-1"><span>Secularism:</span> <strong>Article 12</strong></li>
+          </ul>
+        </div>
+
+        <!-- Essential Article Map -->
+        <div class="theme-card rounded-2xl p-6 border space-y-3">
+          <h5 class="font-bold text-sm text-teal-500 uppercase tracking-wider">Must-Memorize Articles</h5>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div><strong>Art 1:</strong> Unitary Republic</div>
+            <div><strong>Art 7:</strong> Supremacy</div>
+            <div><strong>Art 17:</strong> Education</div>
+            <div><strong>Art 22:</strong> Judicial Sep</div>
+            <div><strong>Art 55(3):</strong> Cabinet Resp</div>
+            <div><strong>Art 65:</strong> Parliament</div>
+            <div><strong>Art 70:</strong> Party Voting</div>
+            <div><strong>Art 77:</strong> Ombudsman</div>
+            <div><strong>Art 122:</strong> Voter Right</div>
+            <div><strong>Art 142:</strong> Amendment</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Footer with Distributed Attribution -->
+  <footer class="mt-20 border-t py-10 transition-colors" style="border-color: var(--accent-border); background: var(--bg-secondary);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+      <div class="flex items-center justify-center space-x-2 text-emerald-500 font-bold">
+        <i class="fa-solid fa-scale-balanced"></i>
+        <span>Constitution of Bangladesh Study Atlas</span>
+      </div>
+      <p class="text-xs text-muted max-w-xl mx-auto leading-relaxed">
+        Designed for academic study and competitive examination preparation. Based on constitutional class notes and statutory source materials.
+      </p>
+      <div class="text-xs font-semibold pt-2 border-t max-w-xs mx-auto text-emerald-600 dark:text-emerald-400" style="border-color: var(--accent-border);">
+        Curated & Compiled by <span class="underline">Md. Sayem Chowdhury</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Mobile Bottom Navigation Bar -->
+  <div class="lg:hidden fixed bottom-3 left-4 right-4 z-40">
+    <div class="theme-card rounded-2xl p-2 border shadow-2xl flex items-center justify-around text-xs font-medium backdrop-blur-xl">
+      <button onclick="scrollToSection('hero')" class="p-2 flex flex-col items-center hover:text-emerald-500">
+        <i class="fa-solid fa-house text-base"></i>
+        <span class="text-[10px] mt-0.5">Home</span>
+      </button>
+      <button onclick="scrollToSection('parts')" class="p-2 flex flex-col items-center hover:text-emerald-500">
+        <i class="fa-solid fa-sitemap text-base"></i>
+        <span class="text-[10px] mt-0.5">11 Parts</span>
+      </button>
+      <button onclick="scrollToSection('articles')" class="p-2 flex flex-col items-center hover:text-emerald-500">
+        <i class="fa-solid fa-gavel text-base"></i>
+        <span class="text-[10px] mt-0.5">Rights</span>
+      </button>
+      <button onclick="scrollToSection('quiz')" class="p-2 flex flex-col items-center hover:text-emerald-500">
+        <i class="fa-solid fa-brain text-base"></i>
+        <span class="text-[10px] mt-0.5">Drill</span>
+      </button>
+      <button onclick="scrollToSection('revision')" class="p-2 flex flex-col items-center text-emerald-500 font-bold">
+        <i class="fa-solid fa-star text-base"></i>
+        <span class="text-[10px] mt-0.5">Revision</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Search Atlas Modal (Cmd + K) -->
+  <div id="searchModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-start justify-center pt-16 px-4">
+    <div class="theme-card rounded-2xl max-w-2xl w-full border shadow-2xl p-6 space-y-4 max-h-[80vh] flex flex-col">
+      <div class="flex items-center justify-between border-b pb-3" style="border-color: var(--accent-border);">
+        <div class="flex items-center space-x-2 text-emerald-500">
+          <i class="fa-solid fa-magnifying-glass text-lg"></i>
+          <h4 class="font-bold text-base">Live Search Atlas</h4>
+        </div>
+        <button onclick="closeSearchModal()" class="text-gray-400 hover:text-gray-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <input type="text" id="searchInput" oninput="executeSearch()" placeholder="Search articles, amendments, scholars, or principles (e.g., 'Article 70', 'Secularism')..." class="w-full px-4 py-3 rounded-xl border bg-transparent focus:outline-none focus:border-emerald-500 text-sm">
+
+      <div id="searchResults" class="overflow-y-auto space-y-3 flex-1 text-xs">
+        <div class="text-center opacity-60 py-8">Type keywords above to filter the study atlas live.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About & Attribution Modal -->
+  <div id="aboutModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="theme-card rounded-2xl max-w-md w-full border shadow-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between border-b pb-3" style="border-color: var(--accent-border);">
+        <h4 class="font-bold text-base flex items-center gap-2">
+          <i class="fa-solid fa-graduation-cap text-emerald-500"></i> About Study Atlas
+        </h4>
+        <button onclick="closeAboutModal()" class="text-gray-400 hover:text-gray-600">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <p class="text-xs opacity-80 leading-relaxed">
+        This interactive web study atlas is built to provide an exhaustive digital learning resource for students studying the <strong>Constitution of Bangladesh</strong>.
+      </p>
+      <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs">
+        <strong>Academic Compiler:</strong> Md. Sayem Chowdhury<br>
+        <strong>Content Coverage:</strong> Complete 153 Articles, 11 Parts, 18 Fundamental Rights, 17 Amendments, Scholars' Definitions, and 1972 Drafting Timeline.
+      </div>
+      <button onclick="closeAboutModal()" class="w-full py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition">Close</button>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules & Interactive Logic -->
+  <script>
+    /* Global State & Theme Management */
+    let currentTheme = localStorage.getItem('bd_const_theme') || 'emerald';
+
+    function setTheme(theme) {
+      currentTheme = theme;
+      localStorage.setItem('bd_const_theme', theme);
+      document.documentElement.setAttribute('data-theme', theme === 'emerald' ? '' : theme);
+      
+      // Update checkmarks in menu
+      document.querySelectorAll('.theme-check').forEach(el => el.classList.add('hidden'));
+      const activeCheck = document.getElementById(`check-${theme}`);
+      if (activeCheck) activeCheck.classList.remove('hidden');
+      
+      toggleThemeMenu(false);
+    }
+
+    function toggleThemeMenu(forceState) {
+      const menu = document.getElementById('themeMenu');
+      if (forceState !== undefined) {
+        menu.classList.toggle('hidden', !forceState);
+      } else {
+        menu.classList.toggle('hidden');
+      }
+    }
+
+    // Scroll smoothly to target section
+    function scrollToSection(id) {
+      const section = document.getElementById(id);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    /* Background Canvas Wave & Nodes Animation */
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let step = 0;
+    function animateCanvas() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.beginPath();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = currentTheme === 'crimson' ? 'rgba(244, 63, 94, 0.15)' : 'rgba(16, 185, 129, 0.15)';
+
+      for (let x = 0; x < width; x += 30) {
+        let y = Math.sin((x + step) * 0.005) * 20 + height * 0.8;
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      step += 1;
+      requestAnimationFrame(animateCanvas);
+    }
+
+    /* Fundamental Rights Filter Tabs */
+    function filterRights(group) {
+      const cards = document.querySelectorAll('.right-card');
+      cards.forEach(card => {
+        if (group === 'all' || card.classList.contains(group)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Update Active Tab Styling
+      ['all', 'groupA', 'groupB', 'groupC'].forEach(g => {
+        const btn = document.getElementById(`btn-right-${g}`);
+        if (g === group) {
+          btn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition bg-emerald-600 text-white';
+        } else {
+          btn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition border hover:bg-emerald-500/10';
+        }
+      });
+    }
+
+    /* Search Atlas Logic */
+    const searchableData = [
+      { title: "Article 1: Unitary People's Republic", category: "Articles", text: "Establishes Bangladesh as a unitary people's republic." },
+      { title: "Article 7: Supremacy of Constitution", category: "Articles", text: "Ensures the supreme legal authority of the Constitution." },
+      { title: "Article 8: Fundamental Principles", category: "Principles", text: "Nationalism, Socialism, Democracy, Secularism." },
+      { title: "Article 12: Secularism", category: "Principles", text: "Freedom of religion and prohibition of political abuse of religion." },
+      { title: "Article 17: Universal Education", category: "Principles", text: "Free and compulsory education directive principle." },
+      { title: "Article 27: Equality Before Law", category: "Rights", text: "Group A absolute right granting equal legal protection." },
+      { title: "Article 70: Party Voting Prohibition", category: "Shortcomings", text: "MP loses seat if voting against party nomination." },
+      { title: "Article 122: Voting Rights", category: "Rights", text: "Right to vote for citizens aged 18 and above." },
+      { title: "Article 142: Amendment Procedure", category: "Amendments", text: "Requires 2/3 Parliamentary majority and President approval." },
+      { title: "4th Amendment (25 Jan 1975)", category: "Amendments", text: "Introduced presidential system and one-party rule." },
+      { title: "8th Amendment (7 June 1988)", category: "Amendments", text: "Declared Islam state religion and setup High Court benches." },
+      { title: "12th Amendment (6 Aug 1991)", category: "Amendments", text: "Restored parliamentary form of government." },
+      { title: "15th Amendment (30 June 2011)", category: "Amendments", text: "Abolished caretaker system and expanded reserved women seats to 50." },
+      { title: "16th Amendment (17 Sept 2014)", category: "Amendments", text: "Parliament empowered to impeach judges (Struck down by SC)." },
+      { title: "Woolsey Definition", category: "Scholars", text: "Power of government vs rights of governed." },
+      { title: "Lord Bryce Definition", category: "Scholars", text: "Established rules embodying government practice." },
+      { title: "Gilchrist Definition", category: "Scholars", text: "Body of written or unwritten rules distributing state powers." }
+    ];
+
+    function openSearchModal() {
+      document.getElementById('searchModal').classList.remove('hidden');
+      document.getElementById('searchInput').focus();
+    }
+    function closeSearchModal() {
+      document.getElementById('searchModal').classList.add('hidden');
+    }
+
+    function executeSearch() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const resultsContainer = document.getElementById('searchResults');
+
+      if (!query) {
+        resultsContainer.innerHTML = '<div class="text-center opacity-60 py-8">Type keywords above to filter the study atlas live.</div>';
+        return;
+      }
+
+      const filtered = searchableData.filter(item => 
+        item.title.toLowerCase().includes(query) || 
+        item.text.toLowerCase().includes(query) ||
+        item.category.toLowerCase().includes(query)
+      );
+
+      if (filtered.length === 0) {
+        resultsContainer.innerHTML = '<div class="text-center opacity-60 py-8">No matching constitutional provisions found.</div>';
+        return;
+      }
+
+      resultsContainer.innerHTML = filtered.map(item => `
+        <div class="p-3 rounded-xl theme-card border hover:border-emerald-500 transition cursor-pointer">
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-bold text-emerald-500">${highlightMatch(item.title, query)}</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-[10px] font-mono">${item.category}</span>
+          </div>
+          <p class="text-xs opacity-75">${highlightMatch(item.text, query)}</p>
+        </div>
+      `).join('');
+    }
+
+    function highlightMatch(text, query) {
+      const regex = new RegExp(`(${query})`, 'gi');
+      return text.replace(regex, '<span class="search-highlight">$1</span>');
+    }
+
+    /* Modal Triggers for About Modal */
+    function openAboutModal() { document.getElementById('aboutModal').classList.remove('hidden'); }
+    function closeAboutModal() { document.getElementById('aboutModal').classList.add('hidden'); }
+
+    /* Interactive Knowledge Quiz Engine */
+    const quizData = [
+      {
+        question: "When was the Constitution of Bangladesh formally adopted by the Constituent Assembly?",
+        options: ["23 March 1972", "4 November 1972", "16 December 1972", "10 April 1972"],
+        correct: 1,
+        explanation: "The Constitution was formally adopted on 4 November 1972 and came into force on 16 December 1972."
+      },
+      {
+        question: "Who chaired the 34-member Constitution Drafting Committee in 1972?",
+        options: ["Sheikh Mujibur Rahman", "Dr. Kamal Hossain", "Razia Banu", "Tajuddin Ahmad"],
+        correct: 1,
+        explanation: "Dr. Kamal Hossain chaired the drafting committee. Razia Banu was the sole female member."
+      },
+      {
+        question: "How many Fundamental Rights are listed under Part III according to the class note?",
+        options: ["11 Rights", "15 Rights", "18 Rights", "21 Rights"],
+        correct: 2,
+        explanation: "Part III provides 18 fundamental rights, categorized as 8 Absolute + 6 Reasonable Restriction + 4 Legislative."
+      },
+      {
+        question: "Which constitutional amendment restored the Parliamentary form of government in 1991?",
+        options: ["Fourth Amendment", "Eighth Amendment", "Twelfth Amendment", "Fifteenth Amendment"],
+        correct: 2,
+        explanation: "The 12th Amendment (6 August 1991) restored the parliamentary system, making PM executive head."
+      },
+      {
+        question: "Under Article 142, what majority is required in Parliament to amend the Constitution?",
+        options: ["Simple majority", "Two-thirds of total members", "Three-fourths of total members", "Unanimous vote"],
+        correct: 1,
+        explanation: "Article 142 specifies that an amendment bill must be passed by votes of at least two-thirds of total MPs."
+      }
+    ];
+
+    let currentQuizIndex = 0;
+    let quizScore = 0;
+    let answered = false;
+
+    function renderQuestion() {
+      answered = false;
+      const q = quizData[currentQuizIndex];
+      document.getElementById('quizCurrent').innerText = currentQuizIndex + 1;
+      document.getElementById('quizTotal').innerText = quizData.length;
+      document.getElementById('nextQuizBtn').classList.add('hidden');
+
+      const container = document.getElementById('quizContainer');
+      container.innerHTML = `
+        <h4 class="font-bold text-base sm:text-lg">${q.question}</h4>
+        <div class="space-y-2 pt-2">
+          ${q.options.map((opt, i) => `
+            <button onclick="selectOption(${i})" id="opt-${i}" class="w-full text-left p-3.5 rounded-xl border text-xs font-medium hover:border-emerald-500 transition flex items-center justify-between">
+              <span>${opt}</span>
+              <i class="fa-regular fa-circle text-gray-400" id="icon-${i}"></i>
+            </button>
+          `).join('')}
+        </div>
+        <div id="quizExplanation" class="hidden p-3.5 rounded-xl text-xs border font-medium"></div>
+      `;
+    }
+
+    function selectOption(index) {
+      if (answered) return;
+      answered = true;
+      const q = quizData[currentQuizIndex];
+      const explanation = document.getElementById('quizExplanation');
+
+      for (let i = 0; i < q.options.length; i++) {
+        const btn = document.getElementById(`opt-${i}`);
+        const icon = document.getElementById(`icon-${i}`);
+        
+        if (i === q.correct) {
+          btn.classList.add('bg-emerald-500/20', 'border-emerald-500', 'text-emerald-700', 'dark:text-emerald-300');
+          icon.className = 'fa-solid fa-circle-check text-emerald-500';
+        } else if (i === index) {
+          btn.classList.add('bg-rose-500/20', 'border-rose-500', 'text-rose-700', 'dark:text-rose-300');
+          icon.className = 'fa-solid fa-circle-xmark text-rose-500';
+        }
+      }
+
+      if (index === q.correct) {
+        quizScore += 1;
+        document.getElementById('quizScoreBadge').innerText = `Score: ${quizScore}`;
+      }
+
+      explanation.innerText = q.explanation;
+      explanation.className = 'p-3.5 rounded-xl text-xs border bg-emerald-500/10 border-emerald-500/30 text-emerald-800 dark:text-emerald-200 block';
+
+      document.getElementById('nextQuizBtn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+      if (currentQuizIndex < quizData.length - 1) {
+        currentQuizIndex++;
+        renderQuestion();
+      } else {
+        document.getElementById('quizContainer').innerHTML = `
+          <div class="text-center py-8 space-y-3">
+            <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-2xl font-bold mx-auto">
+              <i class="fa-solid fa-trophy"></i>
+            </div>
+            <h4 class="text-xl font-bold">Drill Completed!</h4>
+            <p class="text-sm opacity-80">You scored <strong>${quizScore}</strong> out of <strong>${quizData.length}</strong>.</p>
+          </div>
+        `;
+        document.getElementById('nextQuizBtn').classList.add('hidden');
+      }
+    }
+
+    function restartQuiz() {
+      currentQuizIndex = 0;
+      quizScore = 0;
+      document.getElementById('quizScoreBadge').innerText = `Score: 0`;
+      renderQuestion();
+    }
+
+    /* Scroll Progress Indicator Bar */
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+
+    /* Keyboard Shortcuts (Cmd / Ctrl + K) */
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        openSearchModal();
+      }
+    });
+
+    /* Initialize Application on Page Load */
+    window.onload = function() {
+      setTheme(currentTheme);
+      animateCanvas();
+      renderQuestion();
+    };
+  </script>
+</body>
+</html>
